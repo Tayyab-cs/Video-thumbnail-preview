@@ -7,7 +7,6 @@ function App() {
   const [hoveredTime, setHoveredTime] = useState(null);
   const playerRef = useRef(null);
   const hoverPlayerRef = useRef(null);
-  const [seekTime, setSeekTime] = useState(0);
 
   const handleProgress = (progress) => {
     setPlayed(progress.played);
@@ -29,11 +28,6 @@ function App() {
     setHoveredTime(null);
   };
 
-  const handleSeek = (seek) => {
-    console.log("handleSeek: ", seek);
-    setSeekTime(seek);
-  };
-
   return (
     <div className="App">
       <h1>Custom Video Player</h1>
@@ -45,7 +39,6 @@ function App() {
         controls
         light={true}
         onProgress={handleProgress}
-        onSeek={handleSeek}
       />
       <div
         className="seekbar-container"
@@ -59,9 +52,13 @@ function App() {
           step="any"
           value={played}
           onChange={handleSeekChange}
+          style={{ width: "100%" }}
         />
         {hoveredTime !== null && (
-          <div className="thumbnail-preview">
+          <div
+            className="thumbnail-preview"
+            style={{ transform: `translateX(${played * 100}%)` }}
+          >
             <ReactPlayer
               ref={hoverPlayerRef}
               width={100}
@@ -70,8 +67,8 @@ function App() {
                 "https://live-par-2-cdn-alt.livepush.io/live/bigbuckbunnyclip/index.m3u8"
               }
               playing={false}
+              style={{ border: "1px solid black", borderRadius: "5px" }}
             />
-            <h6>{seekTime}</h6>
           </div>
         )}
       </div>
